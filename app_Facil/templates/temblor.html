@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Temblor</title>
+</head>
+<body>
+
+    <h1>Registrar Evento Sísmico</h1>
+
+    <!-- 1. FORMULARIO PARA REGISTRAR EN BASE DE DATOS -->
+    <form method="POST" action="{% url 'resultado' %}">
+        {% csrf_token %}
+
+        <div>
+            <label for="magnitud">Magnitud:</label>
+            <input type="number" id="magnitud" name="magnitud" step="0.1" min="0" placeholder="Ej. 5.6" required>
+        </div>
+
+        <div>
+            <label for="lugar">Lugar / Epicentro:</label>
+            <input type="text" id="lugar" name="lugar" placeholder="Ej. Popayán, Cauca" required>
+        </div>
+
+        <div>
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" name="fecha" required>
+        </div>
+
+        <div>
+            <label for="hora">Hora:</label>
+            <input type="time" id="hora" name="hora" required>
+        </div>
+
+        <div>
+            <label for="profundidad">Profundidad (km):</label>
+            <input type="number" id="profundidad" name="profundidad" step="0.1" min="0" placeholder="Ej. 35.5" required>
+        </div>
+
+        <div>
+            <label for="rango_profundidad">Rango de Profundidad:</label>
+            <select id="rango_profundidad" name="rango_profundidad" required>
+                <option value="" disabled selected>Selecciona un rango</option>
+                <option value="Superficial">Superficial (&lt; 30 km)</option>
+                <option value="Intermedio">Intermedio (30 - 120 km)</option>
+                <option value="Profundo">Profundo (&gt; 120 km)</option>
+            </select>
+        </div>
+
+        <br>
+        <button type="submit">Guardar en Base de Datos</button>
+    </form>
+
+    <hr>
+
+    <!-- 2. BÚSQUEDA POR ID O LUGAR -->
+    <h3>Buscar por ID o Lugar</h3>
+    <form method="GET" action="{% url 'buscar_temblor' %}">
+        <input type="text" name="busqueda" placeholder="Ingrese ID o Lugar..." required>
+        <button type="submit">Buscar por Texto/ID</button>
+    </form>
+
+    <br>
+
+    <!-- 3. BÚSQUEDA POR FECHA Y HORA -->
+    <h3>Buscar por Fecha y Hora</h3>
+    <form method="GET" action="{% url 'buscar_temblor' %}">
+        <label for="fecha_busqueda">Fecha:</label>
+        <input type="date" id="fecha_busqueda" name="fecha_busqueda" required>
+
+        <label for="hora_busqueda">Hora (Opcional):</label>
+        <input type="time" id="hora_busqueda" name="hora_busqueda">
+
+        <button type="submit">Buscar por Fecha/Hora</button>
+    </form>
+
+    <br><hr><br>
+
+    <!-- 4. BOTÓN PARA LISTAR TODOS LOS REGISTROS -->
+    <a href="{% url 'lista_temblores' %}">
+        <button type="button">Ver Todos los Temblores Guardados</button>
+    </a>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultado / Búsqueda</title>
+</head>
+<body>
+
+    <!-- SI SE ENCONTRÓ O REGISTRÓ UN TEMBLOR -->
+    {% if temblor %}
+        <h1>Detalle del Temblor (ID #{{ temblor.id }})</h1>
+        <ul>
+            <li><strong>Magnitud:</strong> {{ temblor.magnitud }}</li>
+            <li><strong>Lugar:</strong> {{ temblor.lugar }}</li>
+            <li><strong>Fecha:</strong> {{ temblor.fecha }}</li>
+            <li><strong>Hora:</strong> {{ temblor.hora }}</li>
+            <li><strong>Profundidad:</strong> {{ temblor.profundidad }} km</li>
+            <li><strong>Rango:</strong> {{ temblor.rango_profundidad }}</li>
+        </ul>
+    {% endif %}
+
+    <!-- SI HUBO UN ERROR EN LA BÚSQUEDA -->
+    {% if error_busqueda %}
+        <h1>Resultado de la Búsqueda</h1>
+        <p style="color: red;">{{ error_busqueda }}</p>
+    {% endif %}
+
+    <!-- SI SE SOLICITÓ LA LISTA COMPLETA -->
+    {% if temblores %}
+        <h1>Temblores Registrados en Base de Datos</h1>
+        <table border="1" cellpadding="8" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Magnitud</th>
+                    <th>Lugar</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Profundidad</th>
+                    <th>Rango</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in temblores %}
+                    <tr>
+                        <td>{{ t.id }}</td>
+                        <td><strong>{{ t.magnitud }}</strong></td>
+                        <td>{{ t.lugar }}</td>
+                        <td>{{ t.fecha }}</td>
+                        <td>{{ t.hora }}</td>
+                        <td>{{ t.profundidad }} km</td>
+                        <td>{{ t.rango_profundidad }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <br><br>
+    <a href="{% url 'formulario_temblor' %}"><button>← Volver al Formulario</button></a>
+    <a href="{% url 'lista_temblores' %}"><button>Ver todos los guardados</button></a>
+
+</body>
+</html>
