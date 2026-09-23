@@ -12,11 +12,22 @@
         <ul>
             <li><strong>Magnitud:</strong> {{ temblor.magnitud }}</li>
             <li><strong>Lugar:</strong> {{ temblor.lugar }}</li>
+            <!-- Relación 1-N -->
+            <li><strong>Departamento:</strong> {{ temblor.departamento.nombre|default:"No especificado" }}</li>
             <li><strong>Fecha:</strong> {{ temblor.fecha }}</li>
             <li><strong>Hora:</strong> {{ temblor.hora }}</li>
             <li><strong>Profundidad:</strong> {{ temblor.profundidad }} km</li>
             <li><strong>Rango:</strong> {{ temblor.rango_profundidad }}</li>
         </ul>
+
+        <!-- Relación 1-1 -->
+        {% if temblor.reporte_danios %}
+            <h3>Reporte de Afectaciones (1-1)</h3>
+            <ul>
+                <li><strong>Afectados:</strong> {{ temblor.reporte_danios.afectados }}</li>
+                <li><strong>Descripción:</strong> {{ temblor.reporte_danios.descripcion_danios }}</li>
+            </ul>
+        {% endif %}
     {% endif %}
 
     <!-- SI HUBO UN ERROR EN LA BÚSQUEDA -->
@@ -34,10 +45,12 @@
                     <th>#</th>
                     <th>Magnitud</th>
                     <th>Lugar</th>
+                    <th>Departamento (1-N)</th>
                     <th>Fecha</th>
                     <th>Hora</th>
                     <th>Profundidad</th>
                     <th>Rango</th>
+                    <th>Afectados (1-1)</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,10 +59,12 @@
                         <td>{{ t.id }}</td>
                         <td><strong>{{ t.magnitud }}</strong></td>
                         <td>{{ t.lugar }}</td>
+                        <td>{{ t.departamento.nombre|default:"N/A" }}</td>
                         <td>{{ t.fecha }}</td>
                         <td>{{ t.hora }}</td>
                         <td>{{ t.profundidad }} km</td>
                         <td>{{ t.rango_profundidad }}</td>
+                        <td>{{ t.reporte_danios.afectados|default:"0" }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

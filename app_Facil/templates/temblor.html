@@ -9,10 +9,10 @@
 
     <h1>Registrar Evento Sísmico</h1>
 
-    <!-- 1. FORMULARIO PARA REGISTRAR EN BASE DE DATOS -->
     <form method="POST" action="{% url 'resultado' %}">
         {% csrf_token %}
 
+        <h3>Información del Temblor</h3>
         <div>
             <label for="magnitud">Magnitud:</label>
             <input type="number" id="magnitud" name="magnitud" step="0.1" min="0" placeholder="Ej. 5.6" required>
@@ -21,6 +21,17 @@
         <div>
             <label for="lugar">Lugar / Epicentro:</label>
             <input type="text" id="lugar" name="lugar" placeholder="Ej. Popayán, Cauca" required>
+        </div>
+
+        <!-- RELACIÓN 1-N: Selección del Departamento -->
+        <div>
+            <label for="departamento">Departamento (Relación 1-N):</label>
+            <select id="departamento" name="departamento_id" required>
+                <option value="" disabled selected>Selecciona un departamento</option>
+                {% for d in departamentos %}
+                    <option value="{{ d.id }}">{{ d.nombre }}</option>
+                {% endfor %}
+            </select>
         </div>
 
         <div>
@@ -48,13 +59,24 @@
             </select>
         </div>
 
+        <hr>
+        <h3>Reporte de Daños (Relación 1-1)</h3>
+        <div>
+            <label for="afectados">Número de personas afectadas:</label>
+            <input type="number" id="afectados" name="afectados" min="0" value="0">
+        </div>
+
+        <div>
+            <label for="descripcion_danios">Descripción de daños:</label>
+            <textarea id="descripcion_danios" name="descripcion_danios" placeholder="Detalles de afectaciones..."></textarea>
+        </div>
+
         <br>
         <button type="submit">Guardar en Base de Datos</button>
     </form>
 
     <hr>
 
-    <!-- 2. BÚSQUEDA POR ID O LUGAR -->
     <h3>Buscar por ID o Lugar</h3>
     <form method="GET" action="{% url 'buscar_temblor' %}">
         <input type="text" name="busqueda" placeholder="Ingrese ID o Lugar..." required>
@@ -63,7 +85,6 @@
 
     <br>
 
-    <!-- 3. BÚSQUEDA POR FECHA Y HORA -->
     <h3>Buscar por Fecha y Hora</h3>
     <form method="GET" action="{% url 'buscar_temblor' %}">
         <label for="fecha_busqueda">Fecha:</label>
@@ -77,7 +98,6 @@
 
     <br><hr><br>
 
-    <!-- 4. BOTÓN PARA LISTAR TODOS LOS REGISTROS -->
     <a href="{% url 'lista_temblores' %}">
         <button type="button">Ver Todos los Temblores Guardados</button>
     </a>
